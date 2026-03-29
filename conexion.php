@@ -1,12 +1,12 @@
 <?php
 
-$host = $_ENV["MYSQLHOST"] ?? "localhost";
-$user = $_ENV["MYSQLUSER"] ?? "root";
-$pass = $_ENV["MYSQLPASSWORD"] ?? "";
-$db   = $_ENV["MYSQLDATABASE"] ?? "boliche";
-$port = $_ENV["MYSQLPORT"] ?? 3306;
+$host = "mysql.railway.internal";
+$user = "root";
+$pass = "gTvItLKIUbRLeAmDplhwSZHDWFpMYbdC";
+$db   = "railway";
+$port = 3306;
 
-$conn = new mysqli($host, $user, $pass, $db, (int)$port);
+$conn = new mysqli($host, $user, $pass, $db, $port);
 
 if ($conn->connect_error) {
     die("Error de conexión: " . $conn->connect_error);
