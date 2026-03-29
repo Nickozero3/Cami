@@ -30,10 +30,10 @@ $row = $res->fetch_assoc();
 
 if($row["total"] == 0){
     $conn->query("
-    INSERT INTO usuarios (usuario,password,rol) VALUES
-    ('puerta','1234','puerta'),
-    ('nicko','1234','admin')
-    ('cami','1234','admin')
+  INSERT INTO usuarios (usuario,password,rol) VALUES
+    ('cami','1234','admin'),
+    ('nicko','1234','admin'),
+    ('puerta','1234','puerta')
     ");
 }
 
