@@ -1,26 +1,21 @@
 <?php
-// $conn = new mysqli("localhost","root","","boliche");
 
+$host = $_ENV["MYSQLHOST"] ?? "localhost";
+$user = $_ENV["MYSQLUSER"] ?? "root";
+$pass = $_ENV["MYSQLPASSWORD"] ?? "";
+$db   = $_ENV["MYSQLDATABASE"] ?? "boliche";
+$port = $_ENV["MYSQLPORT"] ?? 3306;
 
-// if ($conn->connect_error) {
-//     die("Error de conexión");
-// }
-
-$host = getenv("mysql.railway.internal");
-$user = getenv("root");
-$pass = getenv("MgTvItLKIUbRLeAmDplhwSZHDWFpMYbdC");
-$db   = getenv("railway");
-$port = getenv("3306");
-
-$conn = new mysqli($host, $user, $pass, $db, $port);
+$conn = new mysqli($host, $user, $pass, $db, (int)$port);
 
 if ($conn->connect_error) {
     die("Error de conexión: " . $conn->connect_error);
 }
 
 /* ===========================
-   CREAR TABLA USUARIOS
+   CREAR TABLAS AUTOMATICO
 =========================== */
+
 $conn->query("
 CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -30,12 +25,10 @@ CREATE TABLE IF NOT EXISTS usuarios (
 )
 ");
 
-/* insertar usuarios solo si no existen */
 $res = $conn->query("SELECT COUNT(*) as total FROM usuarios");
 $row = $res->fetch_assoc();
 
 if($row["total"] == 0){
-
     $conn->query("
     INSERT INTO usuarios (usuario,password,rol) VALUES
     ('admin','1234','admin'),
@@ -44,9 +37,6 @@ if($row["total"] == 0){
     ");
 }
 
-/* ===========================
-   CREAR TABLA ANOTADOS
-=========================== */
 $conn->query("
 CREATE TABLE IF NOT EXISTS anotados (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -58,5 +48,4 @@ CREATE TABLE IF NOT EXISTS anotados (
     entro INT DEFAULT 0
 )
 ");
-
 ?>
