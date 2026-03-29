@@ -7,9 +7,18 @@ if($_SESSION["rol"] != "puerta" and $_SESSION["rol"] != "admin"){
     die("No permitido");
 }
 
-if(isset($_GET["id"])){
-    $id = $_GET["id"];
-    $conn->query("UPDATE anotados SET entro=1 WHERE id=$id");
+if(isset($_GET["estado"])){
+    $id = $_GET["estado"];
+
+    $conn->query("
+        UPDATE anotados 
+        SET entro = CASE
+            WHEN entro = 0 THEN 1
+            WHEN entro = 1 THEN 2
+            ELSE 0
+        END
+        WHERE id = $id
+    ");
 }
 
 $buscar = $_GET["buscar"] ?? "";
@@ -122,11 +131,34 @@ while($row = $res->fetch_assoc()){
 DNI: <?php echo $row["dni"]; ?><br>
 Invita: <?php echo $row["usuario"]; ?><br><br>
 
-<?php if($row["entro"]==0){ ?>
-<a class="btn" href="?id=<?php echo $row["id"]; ?>">ENTRO</a>
-<?php }else{ ?>
-<span class="ok">YA ENTRO ✅</span>
-<?php } ?>
+<?php
+if($row["entro"]==0){
+    echo "<span style='color:orange;'>NO LLEGÓ ⏳</span><br><br>";
+}elseif($row["entro"]==1){
+    echo "<span style='color:lime;'>ADENTRO 🟢</span><br><br>";
+}else{
+    echo "<span style='color:red;'>SE FUE 🚶</span><br><br>";
+}
+?>
+
+<a class="btn"
+style="
+background:
+<?php
+if($row["entro"]==0) echo 'green';
+elseif($row["entro"]==1) echo 'red';
+else echo 'gray';
+?>;
+"
+href="?estado=<?php echo $row["id"]; ?>">
+
+<?php
+if($row["entro"]==0) echo "ENTRO";
+elseif($row["entro"]==1) echo "SE FUE";
+else echo "RESET";
+?>
+
+</a>
 
 </div>
 
