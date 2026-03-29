@@ -31,9 +31,9 @@ $row = $res->fetch_assoc();
 if($row["total"] == 0){
     $conn->query("
     INSERT INTO usuarios (usuario,password,rol) VALUES
-    ('admin','1234','admin'),
     ('puerta','1234','puerta'),
-    ('nicko','1234','user')
+    ('nicko','1234','admin')
+    ('cami','1234','admin')
     ");
 }
 
